@@ -1,0 +1,36 @@
+ul{
+  width: 600px;
+  list-style-type: none;
+  background-color: black;
+  color: white;
+  text-align: center;
+  list-style-position: inside;
+  padding: 0;
+}
+li{
+
+}
+.li1{
+  background-color: #F00;
+  margin: 0 5%;
+}
+.li2{
+  background-color: #FF0;
+  margin: 0 10%;
+}
+.li3{
+  background-color: #0F0;
+  margin: 0 15%;
+}
+.li4{
+  background-color: #0FF;
+  margin: 0 20%;
+}
+.li5{
+  background-color: #00F;
+  margin: 0 25%;
+}
+.li6{
+  background-color: #F0F;
+  margin: 0 30%;
+}

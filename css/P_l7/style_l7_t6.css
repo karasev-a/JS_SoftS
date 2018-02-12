@@ -1,0 +1,6 @@
+ol{
+  width: 100px;
+  list-style-type: decimal-leading-zero;
+  list-style-position: inside;
+
+}

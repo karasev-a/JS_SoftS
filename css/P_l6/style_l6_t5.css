@@ -1,0 +1,11 @@
+p{
+  word-spacing: 20px;
+}
+
+.sp1{
+  letter-spacing: 5px;
+}
+
+.sp2{
+  text-shadow: 10px 10px 10px red;
+}
