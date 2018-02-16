@@ -35,7 +35,23 @@ console.log("---End of Task 2");
 
 //Task 3
 console.log("Task 3");
+function bind(func, context) {
+   // Ваш код
+   var f = (function () {
+     func.apply(context, arguments);
+   });
+return f;
 
+}
+function func() {
+   console.log(this.name + " - "+ this.age);
+}
+var user = {
+   name: "Tom",
+   age: 20
+};
+var f = bind(func, user);
+f(); // "Tom – 20"
 
 console.log("---End of Task 2");
 
