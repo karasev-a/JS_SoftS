@@ -211,5 +211,52 @@ console.log("---End of Task 5");
 //Task 6
 console.log("Task 6");
 
+var square = (function () {
+   var firstSide = 0;
+   var secondSide = 0;
+   function operation() {
+      return firstSide * secondSide;
+   }
+   return {
+      setFirstSide: function (fSide) {
+         firstSide = fSide;
+      },
+      setSecondSider: function (sSide) {
+         secondSide = sSide;
+      },
+      operation: function () {
+         return operation();
+      }
+   }
+}());
+
+var perimeter = (function () {
+   var firstSide = 0;
+   var secondSide = 0;
+   function operation() {
+      return (firstSide + secondSide)*2;
+   }
+   return {
+      setFirstSide: function (fSide) {
+         firstSide = fSide;
+      },
+      setSecondSider: function (sSide) {
+         secondSide = sSide;
+      },
+      operation: function () {
+         return operation();
+      }
+   }
+}());
+
+square.setFirstSide(5);
+square.setSecondSider(10);
+console.log(square);
+console.log(square.operation());
+
+perimeter.setFirstSide(5);
+perimeter.setSecondSider(10);
+console.log(perimeter);
+console.log(perimeter.operation());
 
 console.log("---End of Task 6");
