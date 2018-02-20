@@ -2,12 +2,14 @@
 //Task 1
 console.log("Task 1");
 
-function numberValid(number) {
-  var res = false;
-  if (typeof number === "number") {
-    res = true;
-  };
-  return res;
+var numVal = {
+  isNumber: function(number) {
+    var res = false;
+    if (typeof number === "number") {
+      res = true;
+    };
+    return res;
+  }
 };
 
 function Figure() {
@@ -22,14 +24,14 @@ function Figure() {
   };
 
   this.setXCenter = function(xCenter) {
-    if (numberValid(xCenter)) {
+    if (numVal.isNumber(xCenter)) {
       _xCenter = xCenter;
     } else {
       _xCenter = 0;
     };
   };
   this.setYCenter = function(yCenter) {
-    if (numberValid(yCenter)) {
+    if (numVal.isNumber(yCenter)) {
       _yCenter = yCenter;
     } else {
       _yCenter = 0;
@@ -46,7 +48,7 @@ function Circle() {
     return _radius;
   };
   this.setRadius = function(radius) {
-    if (numberValid(radius)) {
+    if (numVal.isNumber(radius)) {
       _radius = radius;
     } else {
       _radius = 0;
@@ -66,7 +68,7 @@ function Rectangle() {
     return _diagonal;
   };
   this.setDiagonal = function(diagonal) {
-    if (numberValid(diagonal)) {
+    if (numVal.isNumber(diagonal)) {
       _diagonal = diagonal;
     } else {
       _diagonal = 0;
@@ -78,6 +80,7 @@ function Rectangle() {
   };
 
 };
+
 
 var fig = new Figure();
 fig.setXCenter(-6);
@@ -114,7 +117,7 @@ function Square() {
     return this._side;
   };
   this.setSide = function(side) {
-    if (numberValid(side)) {
+    if (numVal.isNumber(side)) {
       this._side = side;
     } else {
       this._side = 0;
@@ -160,7 +163,85 @@ console.log("---End of Task 2");
 //Task 3
 console.log("Task 3");
 
+function Walkman(curTrack, tracks) {
+  this._curVol = 0;
+  this.curTrack = curTrack;
+  this.tracks = tracks;
+};
+Walkman.prototype.volumeValid = function(curVol) {
+  var resValid = false;
+  if ((curVol >= 0) && (curVol < 100)) {
+    this._curVol = curVol;
+    resValid = true;
+  } else {
+    var resValid = false;
+  };
+  return resValid;
+};
 
+Walkman.prototype.getVolume = function() {
+  return this._curVol;
+};
+Walkman.prototype.setVolume = function(curVol) {
+  if (this.volumeValid(curVol)) {
+    console.log("Volume - " + this._curVol);
+  } else {
+    this._curVol = 0;
+  };
+};
+
+Walkman.prototype.moreVol = function() {
+  this._curVol++;
+  if (this.volumeValid(this._curVol)) {
+    console.log("Volume - " + this._curVol);
+  } else {
+    this._curVol--;
+    console.log("Max Volume!!!");
+  };
+};
+Walkman.prototype.lessVol = function() {
+  this._curVol--;
+  if (this.volumeValid(_curVol)) {
+    resVol = this._curVol;
+    console.log("Volume - " + this._curVol);
+  } else {
+    this._curVol++;
+    console.log("Min Volume!!!");
+  };
+};
+
+Walkman.prototype.nextTrack = function() {
+  this.curTrack++;
+};
+Walkman.prototype.previousTrack = function() {
+  this.curTrack--;
+};
+Walkman.prototype.showInfoTrack = function() {
+  console.log("# - " + this.curTrack + "; name - " + this.tracks[this.curTrack - 1].nameTrack +
+    "; Author - " + this.tracks[this.curTrack - 1].authorTrack +
+    "; Duration of song - " + this.tracks[this.curTrack - 1].lengthTrack);
+};
+
+
+function Track(nameTrack, authorTrack, lengthTrack) {
+  this.nameTrack = nameTrack;
+  this.authorTrack = authorTrack;
+  this.lengthTrack = lengthTrack;
+};
+
+var tracks = [new Track("Belive", "Dragon", 5.25),
+  new Track("Piter", "Leninrad", 3.20),
+  new Track("Du hast", "Rammstein", 6.09)
+];
+
+var mp3Sony = new Walkman(1, tracks);
+mp3Sony.setVolume(99);
+console.dir(mp3Sony);
+mp3Sony.moreVol();
+mp3Sony.nextTrack();
+mp3Sony.nextTrack();
+mp3Sony.previousTrack();
+mp3Sony.showInfoTrack();
 
 console.log("---End of Task 3");
 
@@ -182,14 +263,14 @@ FigureProt.prototype.getYCenter = function() {
 };
 
 FigureProt.prototype.setXCenter = function(xCenter) {
-  if (numberValid(xCenter)) {
+  if (numVal.isNumber(xCenter)) {
     this._xCenter = xCenter;
   } else {
     this._xCenter = 0;
   };
 };
 FigureProt.prototype.setYCenter = function(yCenter) {
-  if (numberValid(yCenter)) {
+  if (numVal.isNumber(yCenter)) {
     this._yCenter = yCenter;
   } else {
     this
@@ -210,7 +291,7 @@ CircleProt.prototype.getRadius = function() {
   return this._radius;
 };
 CircleProt.prototype.setRadius = function(radius) {
-  if (numberValid(radius)) {
+  if (numVal.isNumber(radius)) {
     this._radius = radius;
   } else {
     this._radius = 0;
@@ -233,7 +314,7 @@ RectangleProt.prototype.getDiagonal = function() {
   return this._diagonal;
 };
 RectangleProt.prototype.setDiagonal = function(diagonal) {
-  if (numberValid(diagonal)) {
+  if (numVal.isNumber(diagonal)) {
     this._diagonal = diagonal;
   } else {
     this._diagonal = 0;
@@ -282,7 +363,7 @@ SquareProt.prototype.getSide = function() {
   return this._side;
 };
 SquareProt.prototype.setSide = function(side) {
-  if (numberValid(side)) {
+  if (numVal.isNumber(side)) {
     this._side = side;
   } else {
     this._side = 0;

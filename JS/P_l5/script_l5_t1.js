@@ -172,20 +172,17 @@ console.log("----------------");
 //Task 6 - Objects
 console.log("Task 6 - Object");
 
-function isEmpty(Obj) {
-  countProp = 0;
+function isEmpty(obj) {
   res = true;
-  for (var i in Obj) {
-    if (Obj.hasOwnProperty(i)) {
-      res = false;
-      break;
-    }
+
+  if(Object.keys(obj).length > 0){
+    res = false;
   }
   return res;
 };
 
 var us = {
-  //name: "www"
+  name: "www"
 };
 
 console.log("Is object empty? -  " + isEmpty(us));

@@ -31,31 +31,38 @@ function safeP() {
 
   function findPerimeter() {
     return ((side1 + side2) * 2);
-  }
+  };
 
   function findSquare() {
     return side1 * side2;
-  }
+  };
 
-  function setS1S2(newS1, newS2) {
+  function setSide1(newS1) {
     if (typeof newS1 == "number" && newS1 > 0) {
-      if (typeof newS2 == "number" && newS2 > 0) {
-        side1 = newS1;
-        side2 = newS2;
-      }
-    }
-  }
-  return [findPerimeter, findSquare, setS1S2];
+      side1 = newS1;
+    };
+  };
+
+  function setSide2(newS2) {
+    if (typeof newS2 == "number" && newS2 > 0) {
+      side2 = newS2;
+    };
+  };
+
+
+  return [findPerimeter, findSquare, setSide1, setSide2];
 }
 
 var res = safeP();
 var fPer = res[0];
 var fSq = res[1];
-var setS1S2 = res[2];
+var setS1 = res[2];
+var setS2 = res[3];
 console.log("Task 3");
 console.log(fPer());
 console.log(fSq());
-setS1S2(2, 2);
+setS1(2);
+setS2(2);
 console.log(fPer());
 console.log(fSq());
 
@@ -84,27 +91,27 @@ console.log(res);
 console.log("Task 5");
 
 function format(data, type) {
-   // Ваш код
-   if(type == "number"){
-     format = function () {
-       data = Number(data);
-       return data;
-     }
+  // Ваш код
+  if (type == "number") {
+    format = function() {
+      data = Number(data);
+      return data;
+    }
 
-   }else if (type == "boolean") {
-     format = function () {
-       data = Boolean(data);
-       return data;
-     }
+  } else if (type == "boolean") {
+    format = function() {
+      data = Boolean(data);
+      return data;
+    }
 
-   }else if (type == "string") {
-     format = function () {
-       data = String(data);
-       return data;
-     }
-   }else {
-     return data;
-   }
+  } else if (type == "string") {
+    format = function() {
+      data = String(data);
+      return data;
+    }
+  } else {
+    return data;
+  }
 }
 var originFormat = format;
 
