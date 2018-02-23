@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Свойства узлов</title>
+      <meta charset="utf-8" />
+   </head>
+   <body>
+      <div><b>Привет мир!</b></div>
+      <div><i>Привет мир!</i></div>
+      <script>
+         // Ваш код
+         var tmp = document.body.children[0].innerHTML;
+         document.body.children[0].innerHTML = document.body.children[1].innerHTML;
+         document.body.children[1].innerHTML = tmp;
+      </script>
+   </body>
+</html>

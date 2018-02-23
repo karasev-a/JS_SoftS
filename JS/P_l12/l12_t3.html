@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Навигация в DOM</title>
+      <meta charset="utf-8" />
+   </head>
+   <body>
+      <form name="authForm">
+         Логин:<br />
+         <input type="text" name="log" /><br />
+         Пароль:<br />
+         <input type="text" name="pass" /><br />
+         <button name="signIn">Войти</button>
+      </form>
+      <script>
+         // Ваш код
+         var formName = document.forms.authForm;
+         var formNumber = document.forms[0];
+         var firstEl = formNumber.elements[0];
+         var button = formName.signIn;
+         console.log(formName);
+         console.log(formNumber);
+         console.log(firstEl);
+         console.log(button);
+      </script>
+   </body>
+</html>

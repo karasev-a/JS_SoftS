@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Свойства узлов</title>
+      <meta charset="utf-8" />
+   </head>
+   <body>
+      Текстовый узел №1<br />
+      Текстовый узел №2
+      <script>
+         // Ваш код
+         var textNodes = [];
+         var bodyNodes = document.body.childNodes;
+        for (var i = 0; i < bodyNodes.length; i++) {
+          if(bodyNodes[i].nodeType == 3){
+            textNodes.push(bodyNodes[i].data)
+          };
+        }
+
+        console.log(textNodes[0]);
+        console.log(textNodes[textNodes.length-1]);
+
+      </script>
+   </body>
+</html>
