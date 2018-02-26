@@ -63,7 +63,7 @@ TVChannel.prototype.setName = function(name) {
 
 function Media(model, type, listMediaContetnt) {
   Device.call(this, model, type);
-  this._currentMedia = 1;
+  this._currentMedia = 3;
   this._volume = 50;
   this._listMediaContent = listMediaContetnt;
 };
@@ -80,7 +80,7 @@ Media.prototype.getListMedia = function() {
 };
 
 Media.prototype.moreVolume = function() {
-  if (this._volume < 10) {
+  if (this._volume < 100) {
     this._volume++;
   };
 };
@@ -90,22 +90,23 @@ Media.prototype.lessVolume = function() {
   };
 };
 Media.prototype.nextMedia = function() {
-  if (this._curretnMedia <= this._listMediaContent.length) {
-    this._curretnMedia++;
+  if (this._currentMedia < this._listMediaContent.length) {
+    this._currentMedia++;
   } else {
     this._currentMedia = 1;
   };
 };
 Media.prototype.previousMedia = function() {
-  if (this._curretnMedia > 1) {
-    this._curretnMedia++;
+  if (this._currentMedia > 1) {
+    this._currentMedia--;
   } else {
     this._currentMedia = this._listMediaContent.length;
   };
 };
 Media.prototype.showInfoMedia = function() {
-  var mediaInfo = ("# - " + this._curretnMedia + "; name - " +
-    this._listMediaContent[this._curretnMedia - 1].getName());
+  var mediaInfo = ("# - " + this._currentMedia + "; name - " +
+    this._listMediaContent[this._currentMedia - 1].getName());
+  return mediaInfo;
 };
 
 
@@ -122,16 +123,7 @@ TVView.prototype.render = function() {
   TVContainer.className = "tv";
   root.appendChild(TVContainer);
 
-  var state = document.createElement("div");
-  state.innerHTML = "State: " + (this._TVModel.getState() ? "On" : "Off");
-  state.className = "on";
-  TVContainer.appendChild(state);
-
-  var volume = document.createElement("div");
-  volume.innerHTML = "Volume: " + this._TVModel.getVolume();
-  TVContainer.appendChild(volume);
-
-
+  TVContainer.innerHTML = "<div>TV</div><div>Model: " + this._TVModel.getModel() + "</div>";
 
   var onBtn = document.createElement("button");
   onBtn.innerText = "On";
@@ -156,6 +148,66 @@ TVView.prototype.render = function() {
     }.bind(this)
   );
   TVContainer.appendChild(offBtn);
+
+  var state = document.createElement("div");
+  state.innerHTML = "State: " + (this._TVModel.getState() ? "On" : "Off");
+  state.className = "off";
+  TVContainer.appendChild(state);
+
+  var volume = document.createElement("div");
+  volume.innerHTML = "Volume: " + this._TVModel.getVolume();
+  TVContainer.appendChild(volume);
+
+  var curChannel = document.createElement("div");
+  curChannel.innerHTML = "Channel: " + this._TVModel.showInfoMedia();
+  TVContainer.appendChild(curChannel);
+
+  var incrBtnVol = document.createElement("button");
+  incrBtnVol.innerText = "Vol. ++";
+  incrBtnVol.addEventListener(
+    "click",
+    function() {
+      this._TVModel.moreVolume();
+      volume.innerHTML = "Volume: " + this._TVModel.getVolume();
+    }.bind(this)
+  );
+
+  TVContainer.appendChild(incrBtnVol);
+
+  var decrBtnVol = document.createElement("button");
+  decrBtnVol.innerText = "Vol. --";
+  decrBtnVol.addEventListener(
+    "click",
+    function() {
+      this._TVModel.lessVolume();
+      volume.innerHTML = "Volume: " + this._TVModel.getVolume();
+    }.bind(this)
+  );
+
+  TVContainer.appendChild(decrBtnVol);
+
+
+  var incrBtnChannel = document.createElement("button");
+  incrBtnChannel.innerText = "Next";
+  incrBtnChannel.addEventListener(
+    "click",
+    function() {
+      this._TVModel.nextMedia();
+      curChannel.innerHTML = "Channel: " + this._TVModel.showInfoMedia();
+    }.bind(this)
+  );
+  TVContainer.appendChild(incrBtnChannel);
+
+  var decrBtnChannel = document.createElement("button");
+  decrBtnChannel.innerText = "Prev";
+  decrBtnChannel.addEventListener(
+    "click",
+    function() {
+      this._TVModel.previousMedia();
+      curChannel.innerHTML = "Channel: " + this._TVModel.showInfoMedia();
+    }.bind(this)
+  );
+  TVContainer.appendChild(decrBtnChannel);
 
 };
 var listChannel = [new TVChannel("Inter"), new TVChannel("1+1"), new TVChannel("stb")];
