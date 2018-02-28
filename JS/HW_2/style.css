@@ -10,3 +10,11 @@
 .off {
    background-color: pink;
 }
+
+.listChannel{
+  border: 1px solid green;
+}
+
+.listCh{
+  margin: 0;
+}

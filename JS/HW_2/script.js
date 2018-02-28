@@ -1,3 +1,5 @@
+"use strict";
+
 //Model
 var checkEmptyStr = {
   isEmpty: function(str) {
@@ -63,7 +65,7 @@ TVChannel.prototype.setName = function(name) {
 
 function Media(model, type, listMediaContetnt) {
   Device.call(this, model, type);
-  this._currentMedia = 3;
+  this._currentMedia = 1;
   this._volume = 50;
   this._listMediaContent = listMediaContetnt;
 };
@@ -78,6 +80,12 @@ Media.prototype.getCurrentMedia = function() {
 Media.prototype.getListMedia = function() {
   return this._listMediaContent;
 };
+
+Media.prototype.setCurrentMedia = function(number) {
+  if (number > 0 && number <= this._listMediaContent.length) {
+    this._currentMedia = number;
+  };
+}
 
 Media.prototype.moreVolume = function() {
   if (this._volume < 100) {
@@ -109,8 +117,44 @@ Media.prototype.showInfoMedia = function() {
   return mediaInfo;
 };
 
+///////////////////////////////////////////////////////////////////
 
-//ViuwController
+//Model of Smart House
+
+function SmartHouse(name, listDevices) {
+  this._name = name;
+  this._listDevices = devices;
+}
+
+SmartHouse.prototype.getName = function () {
+  return this._name ;
+}
+
+SmartHouse.prototype.getListDevices = function () {
+  return this._listDevices ;
+}
+
+SmartHouse.prototype.setName = function(name) {
+  if (!checkEmptyStr.isEmpty(name)) {
+    this._name = name;
+  } else {
+    this._name = "House is not named"
+  };
+};
+
+SmartHouse.prototype.offAllDevices = function() {
+  var listDev = this.getListDevices();
+  for (var i = 0; i < listDev.length; i++) {
+    listDev[i].off();
+  };
+};
+
+SmartHouse.prototype.addDevice = function (device) {
+  this._listDevices.push(device);
+};
+
+
+//ViewController
 
 function TVView(TVModel) {
   this._TVModel = TVModel;
@@ -118,6 +162,7 @@ function TVView(TVModel) {
 
 TVView.prototype.render = function() {
   var root = document.getElementById("root");
+  //Model
 
   var TVContainer = document.createElement("div");
   TVContainer.className = "tv";
@@ -159,8 +204,29 @@ TVView.prototype.render = function() {
   TVContainer.appendChild(volume);
 
   var curChannel = document.createElement("div");
+  curChannel.id = "curChanDiv";
   curChannel.innerHTML = "Channel: " + this._TVModel.showInfoMedia();
   TVContainer.appendChild(curChannel);
+
+  var listChannel = document.createElement("div");
+  listChannel.className = "listChannel";
+  listChannel.innerHTML = "List of channels";
+  TVContainer.appendChild(listChannel);
+
+  var ol = document.createElement("ol");
+  ol.id = "listCh";
+  ol.className = "listCh";
+  listChannel.appendChild(ol);
+
+  function fillListChannel() {
+    var list = this.getListMedia();
+    for (var i = 0; i < list.length; i++) {
+      var li = document.createElement("li");
+      li.innerHTML = " " + list[i].getName();
+      ol.appendChild(li);
+    };
+  };
+  fillListChannel.call(this._TVModel);
 
   var incrBtnVol = document.createElement("button");
   incrBtnVol.innerText = "Vol. ++";
@@ -186,7 +252,6 @@ TVView.prototype.render = function() {
 
   TVContainer.appendChild(decrBtnVol);
 
-
   var incrBtnChannel = document.createElement("button");
   incrBtnChannel.innerText = "Next";
   incrBtnChannel.addEventListener(
@@ -208,6 +273,13 @@ TVView.prototype.render = function() {
     }.bind(this)
   );
   TVContainer.appendChild(decrBtnChannel);
+
+  var delBtn = document.createElement("button");
+  delBtn.innerText = "Remove TV";
+  TVContainer.appendChild(delBtn);
+  delBtn.onclick = function () {
+    root.removeChild(TVContainer);
+  };
 
 };
 var listChannel = [new TVChannel("Inter"), new TVChannel("1+1"), new TVChannel("stb")];
