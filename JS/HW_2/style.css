@@ -1,6 +1,24 @@
-.tv {
-   border: 1px solid black;
+.root {
+  border: 3px solid black;
+  width: 50%;
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+}
+
+.tv  {
+   border: 3px solid black;
+   width: 50%;
    display: inline-block;
+   margin: 5px;
+   padding: 5px;
+}
+
+.light  {
+   border: 3px solid black;
+   width: 50%;
+   display: block;
+   margin: 5px;
    padding: 5px;
 }
 
