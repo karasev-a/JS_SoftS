@@ -14,9 +14,21 @@ var checkEmptyStr = {
 
 //Model for Device
 function Device(name, model, type) {
-  this._name = name;
-  this._model = model
-  this._type = type;
+  if (!checkEmptyStr.isEmpty(name)) {
+    this._name = name;
+  } else {
+    this._name = "No name";
+  };
+  if (!checkEmptyStr.isEmpty(model)) {
+    this._model = model;
+  } else {
+    this._model = "Model is not named"
+  };
+  if (!checkEmptyStr.isEmpty(type)) {
+    this.type = type;
+  } else {
+    this._model = "Model is not named"
+  }
   this._state = false;
 };
 Device.prototype.getName = function () {
@@ -161,7 +173,8 @@ Light.prototype.lessBrightness = function() {
 
 function SmartHouse(name, listDevices) {
   this._name = name;
-  this._listDevices = devices;
+  this._listDevices = listDevices;
+  this._listKindDevice = [];
 }
 
 SmartHouse.prototype.getName = function() {
@@ -170,6 +183,10 @@ SmartHouse.prototype.getName = function() {
 
 SmartHouse.prototype.getListDevices = function() {
   return this._listDevices;
+}
+
+SmartHouse.prototype.getListKindDevice = function () {
+  return  this._listKindDevice;
 }
 
 SmartHouse.prototype.setName = function(name) {
@@ -183,13 +200,29 @@ SmartHouse.prototype.setName = function(name) {
 SmartHouse.prototype.offAllDevices = function() {
   var listDev = this.getListDevices();
   for (var i = 0; i < listDev.length; i++) {
-    //var elemConteiner = document.getElementsClassName
     listDev[i].off();
   };
 };
+SmartHouse.prototype.setListKindDevice = function () {
+
+  for (var i = 0; i < this._listDevices.length; i++) {
+    var count = 0;
+    for (var j = 0; j < this._listKindDevice.length; j++) {
+      if(this._listKindDevice[j] == this._listDevices[i].constructor.name){
+        break;
+      }else {
+        count ++;
+      }
+    }
+    if (count == this._listKindDevice.length ){
+      this._listKindDevice.push(this._listDevices[i].constructor.name);
+    }
+  }
+}
 
 SmartHouse.prototype.addDevice = function(device) {
   this._listDevices.push(device);
+  this.setListKindDevice();
 };
 
 
@@ -229,6 +262,78 @@ SmartHouseView.prototype.render = function() {
     }.bind(this)
   );
   shConteiner.appendChild(turnOffAll);
+
+  var brElem = document.createElement("br")
+  var addDeviceBtn  = document.createElement("button");
+  addDeviceBtn.className = "addDevbtn";
+  addDeviceBtn.innerText = "Add new device";
+  shConteiner.appendChild(addDeviceBtn);
+  addDeviceBtn.addEventListener(
+    "click",
+    function () {
+      var listKindDevice = this._smartHouse.getListKindDevice();
+      var divNewDevice = document.createElement("div");
+      divNewDevice.id = "divNewDevice";
+      shConteiner.appendChild(divNewDevice);
+      var selectKindDevice = document.createElement("select");
+      selectKindDevice.id = "selectKindDevice";
+
+
+      for (var i = 0; i < listKindDevice.length; i++) {
+        var option =  document.createElement("option");
+        option.id = "option" + listKindDevice[i];
+        option.innerHTML = listKindDevice[i];
+        selectKindDevice.appendChild(option);
+      }
+      divNewDevice.appendChild(selectKindDevice);
+
+      var inputName = document.createElement("input");
+      inputName.id = "inputNameDev";
+      inputName.placeholder = "name of device";
+      var inputModel = document.createElement("input")
+      inputModel.id = "inputModelDev";
+      inputModel.placeholder = "model of device";
+      var inputType = document.createElement("input")
+      inputType.id = "inputTypeDev";
+      inputType.placeholder = "type of device";
+
+      divNewDevice.appendChild(inputName);
+      divNewDevice.appendChild(inputModel);
+      divNewDevice.appendChild(inputType);
+
+      var inputButton = document.createElement("button");
+      inputButton.id = "buttonCreateNewDev";
+      inputButton.innerText = "Create new device";
+      divNewDevice.appendChild(inputButton);
+      inputButton.addEventListener(
+        "click",
+        function () {
+          if(selectKindDevice.value == "Light"){
+            var devName = inputName.value;
+            var devModel = inputModel.value;
+            var devType = inputType.value;
+            var newLight = new Light(devName, devModel, devType);
+            this._smartHouse.addDevice(newLight);
+            var newLightVC = new LightView(newLight);
+            newLightVC.render();
+          }
+          if(selectKindDevice.value == "Media"){
+            var devName = inputName.value;
+            var devModel = inputModel.value;
+            var devType = inputType.value;
+            var newTV = new Media(devName, devModel, devType, listChannel);
+            this._smartHouse.addDevice(newTV);
+            var newMediaVC = new TVView(newTV);
+            newMediaVC.render();
+          }
+          shConteiner.removeChild(divNewDevice);
+        }.bind(this)
+      );
+    }.bind(this)
+  );
+
+
+
 };
 
 //ViewController of TV
@@ -239,7 +344,7 @@ function TVView(TVModel) {
 TVView.prototype.render = function() {
 
   var TVContainer = document.createElement("div");
-  TVContainer.className = this._TVModel.getName();
+  TVContainer.className = "tv";
   root.appendChild(TVContainer);
 
   TVContainer.innerHTML = "<div>"+ this._TVModel.getName() +"</div><div>Model: " + this._TVModel.getModel() + "</div>";
@@ -392,7 +497,7 @@ function LightView(lightModel) {
 
 LightView.prototype.render = function() {
   var lightContainer = document.createElement("div");
-  lightContainer.className = this._lightModel.getName();
+  lightContainer.className = "light";
   root.appendChild(lightContainer);
 
   lightContainer.innerHTML = "<div>"+this._lightModel.getName()+"</div><div>Model: " + this._lightModel.getModel() + "</div>";
@@ -441,7 +546,6 @@ LightView.prototype.render = function() {
       this._lightModel.lessBrightness();
       brightness.innerHTML = "Brightness: " + this._lightModel.getCurrentBrightness();
       changedBrightness.changeBright(this._lightModel.getCurrentBrightness(), lightContainer); //Object for change Brigh
-      lightContainer.appendChild(brightness);;
     }.bind(this)
   );
   lightContainer.appendChild(decrBtnBrigt);
@@ -454,7 +558,6 @@ LightView.prototype.render = function() {
       this._lightModel.moreBrightness();
       brightness.innerHTML = "Brightness: " + this._lightModel.getCurrentBrightness();
       changedBrightness.changeBright(this._lightModel.getCurrentBrightness(), lightContainer); //Object for change Brigh
-      lightContainer.appendChild(brightness);;
     }.bind(this)
   );
   lightContainer.appendChild(incrBtnBrigt);
@@ -473,6 +576,7 @@ var light = new Light("light","bosh-br60vt", "mainLight");
 var devices = [tv, light];
 
 var sHouse = new SmartHouse("My House", devices);
+sHouse.setListKindDevice();
 
 var shVC = new SmartHouseView(sHouse);
 shVC.render();
