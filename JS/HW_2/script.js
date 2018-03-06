@@ -254,6 +254,7 @@ SmartHouseView.prototype.render = function() {
           listDevices[i].off();
           elemState.innerHTML = "State: " + (listDevices[i].getState() ? "On" : "Off");
           elemState.className = "off";
+
         }else {
           listDevices.splice(i,1);
           i--;
@@ -357,6 +358,13 @@ TVView.prototype.render = function() {
       this._TVModel.on();
       state.innerHTML = "State: " + (this._TVModel.getState() ? "On" : "Off");
       state.className = "on";
+      incrBtnVol.disabled = false;
+      decrBtnVol.disabled = false;
+      decrBtnChannel.disabled = false;
+      incrBtnChannel.disabled = false;
+      curChannel.style.display = "block";
+      listChannel.style.display = "block";
+      volume.style.display = "block";
     }.bind(this)
   );
   TVContainer.appendChild(onBtn);
@@ -369,6 +377,13 @@ TVView.prototype.render = function() {
       this._TVModel.off();
       state.innerHTML = "State: " + (this._TVModel.getState() ? "On" : "Off");
       state.className = "off";
+      incrBtnVol.disabled = true;
+      decrBtnVol.disabled = true;
+      decrBtnChannel.disabled = true;
+      incrBtnChannel.disabled = true;
+      curChannel.style.display = "none";
+      listChannel.style.display = "none";
+      volume.style.display = "none"
     }.bind(this)
   );
   TVContainer.appendChild(offBtn);
@@ -420,6 +435,8 @@ TVView.prototype.render = function() {
 
   TVContainer.appendChild(incrBtnVol);
 
+
+
   var decrBtnVol = document.createElement("button");
   decrBtnVol.innerText = "Vol. --";
   decrBtnVol.addEventListener(
@@ -453,6 +470,16 @@ TVView.prototype.render = function() {
     }.bind(this)
   );
   TVContainer.appendChild(incrBtnChannel);
+
+  if(this._TVModel.getState() == false){
+    incrBtnVol.disabled = true;
+    decrBtnVol.disabled = true;
+    decrBtnChannel.disabled = true;
+    incrBtnChannel.disabled = true;
+    curChannel.style.display = "none";
+    listChannel.style.display = "none";
+    volume.style.display = "none";
+  };
 
   var delBtn = document.createElement("button");
   delBtn.innerText = "Remove TV";
@@ -510,6 +537,10 @@ LightView.prototype.render = function() {
       this._lightModel.on();
       state.innerHTML = "State: " + (this._lightModel.getState() ? "On" : "Off");
       state.className = "on";
+      incrBtnBrigt.disabled = false;
+      decrBtnBrigt.disabled = false;
+      brightness.style.display = "block";
+      changedBrightness.changeBright(this._lightModel.getCurrentBrightness(), lightContainer);
     }.bind(this)
   );
   lightContainer.appendChild(onBtn);
@@ -522,6 +553,10 @@ LightView.prototype.render = function() {
       this._lightModel.off();
       state.innerHTML = "State: " + (this._lightModel.getState() ? "On" : "Off");
       state.className = "off";
+      incrBtnBrigt.disabled = true;
+      decrBtnBrigt.disabled = true;
+      lightContainer.style.background = "gray";
+      brightness.style.display = "none";
     }.bind(this)
   );
   lightContainer.appendChild(offBtn);
@@ -561,6 +596,13 @@ LightView.prototype.render = function() {
     }.bind(this)
   );
   lightContainer.appendChild(incrBtnBrigt);
+
+  if(this._lightModel.getState() == false){
+    incrBtnBrigt.disabled = true;
+    decrBtnBrigt.disabled = true;
+    lightContainer.style.background = "gray";
+    brightness.style.display = "none";
+  };
 
   var delBtn = document.createElement("button");
   delBtn.innerText = "Remove";
